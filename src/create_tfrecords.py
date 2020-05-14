@@ -1,5 +1,6 @@
 '''
 Create tfrecords
+----------------
 Input  : Annotation .json file with the following data structure
          {
              '000001' : ['1', '0', '0', '1'],

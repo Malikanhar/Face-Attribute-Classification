@@ -3,6 +3,7 @@ from tensorflow.keras.layers import GlobalAveragePooling2D, Dense, Dropout
 from tensorflow.keras.metrics import BinaryAccuracy, Precision, Recall, AUC
 from tensorflow.keras.models import Model, load_model
 from time import gmtime, strftime
+import os
 
 def get_model(model, input_shape):
     '''
@@ -61,6 +62,8 @@ def define_metrics():
 
 def save_model(model, model_dir, model_name):
     '''Save the model in model_dir.'''
+    if not os.path.exists(model_dir):
+        os.mkdir(model_dir)
     model_filename = model_name + '_' + strftime("%Y_%m_%d_%H_%M", gmtime()) + '.h5'
     model.save(os.path.join(model_dir, model_filename))
     print('Model saved at {}'.format(model_dir))

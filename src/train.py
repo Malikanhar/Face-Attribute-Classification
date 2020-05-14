@@ -1,5 +1,9 @@
 '''
 Train Face Attribute Classification Model
+-----------------------------------------
+Before training the model, make sure you have tfrecords file for training and validation
+There are three models that you can try for training, by default vgg16 is used
+To continue training, you can also use a model that you have previously trained by setting pretrained flags
 '''
 
 import tensorflow as tf
@@ -28,6 +32,8 @@ def main():
                                     help='Size of image dataset')
     parser.add_argument('--epochs', type=int, default=40,
                                     help='Size of image dataset')
+    parser.add_argument('--lr', type=float, default=1e-4,
+                                    help='Learning rate')
     parser.add_argument('--summary', type=bool, default=True,
                                     help='Model summary will be shown if summary is True')
 
@@ -64,7 +70,7 @@ def main():
     metrics = define_metrics()
 
     # Define the optimizer
-    opt = Adam(learning_rate = 1e-4)
+    opt = Adam(learning_rate = args.lr)
 
     # Compile the model using binary_crossentropy
     attr_model.compile(optimizer=opt, loss='binary_crossentropy', metrics=metrics)

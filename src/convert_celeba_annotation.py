@@ -1,5 +1,6 @@
 '''
 Convert CelebA Annotation
+-------------------------
 Input  : CelebA annotation .txt file 
 Output : Annotation .json file with selected classes such as eyeglasses, mustache, beard, and hat
          The output data type would be a dictionary with image filename as the key and selected classes as the value
