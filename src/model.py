@@ -2,6 +2,7 @@ import tensorflow as tf
 from tensorflow.keras.layers import GlobalAveragePooling2D, Dense, Dropout
 from tensorflow.keras.metrics import BinaryAccuracy, Precision, Recall, AUC
 from tensorflow.keras.models import Model, load_model
+from time import gmtime, strftime
 
 def get_model(model, input_shape):
     '''
@@ -58,11 +59,12 @@ def define_metrics():
       AUC(name='auc'),
     ]
 
-def save_model(model, model_dir, model_filename):
-    '''Save the model in model_dir with model_filename as the filename.'''
+def save_model(model, model_dir, model_name):
+    '''Save the model in model_dir.'''
+    model_filename = model_name + '_' + strftime("%Y_%m_%d_%H_%M", gmtime()) + '.h5'
     model.save(os.path.join(model_dir, model_filename))
     print('Model saved at {}'.format(model_dir))
 
-def load_model(model_path):
+def load_pretrained(model_path):
     '''Load pretrained model.'''
     return load_model(model_path)
