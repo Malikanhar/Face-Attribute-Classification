@@ -20,7 +20,6 @@ import json
 import random
 import os
 from tqdm import tqdm
-from utils import create_tf_example
 
 def _int64_feature(value):
     '''Returns an int64_list from a bool / enum / int / uint.'''
@@ -66,7 +65,10 @@ def main():
                                     help='Image extensions')
     parser.add_argument('--o_train', type=str, default='train.tfrecord')
     parser.add_argument('--o_val', type=str, default='val.tfrecord')
-    parser.add_argument('--validation', type=float, default=0.3,
+    parser.add_argument('--o_test', type=str, default='test.tfrecord')
+    parser.add_argument('--validation', type=float, default=0.1,
+                                    help='Validation ratio, with range 0 to 1')
+    parser.add_argument('--test', type=float, default=0.1,
                                     help='Validation ratio, with range 0 to 1')
 
     args = parser.parse_args()
@@ -88,8 +90,14 @@ def main():
     # Create validation tfrecord file
     val = tf.io.TFRecordWriter(args.o_val)
 
-    val_num = int(args.validation * len(filenames))
-    num = 0
+    # Create test tfrecord file
+    test = tf.io.TFRecordWriter(args.o_test)
+
+    val_total = int(args.validation * len(filenames))
+    val_num = 0
+
+    test_total = int(args.validation * len(filenames))
+    test_num = 0
     
     for filename in tqdm(filenames, 'Loading image'):
         file = open(os.path.join(dataset_path, filename) + image_ext, "rb").read()
@@ -102,9 +110,12 @@ def main():
         tf_example = create_tf_example(example)
         
         # Write serialized tf.Example for validation
-        if num <= val_num:
+        if val_num <= val_total:
             val.write(tf_example.SerializeToString())
-            num += 1
+            val_num += 1
+        elif test_num <= test_total:
+            test.write(tf_example.SerializeToString())
+            test_num += 1
         # Write serialized tf.Example for train
         else:
             train.write(tf_example.SerializeToString())
@@ -112,6 +123,7 @@ def main():
     # Close train and validation tfrecord file
     train.close()
     val.close()
+    test.close()
 
 if __name__ == "__main__":
     main()
