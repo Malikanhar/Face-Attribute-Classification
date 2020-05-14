@@ -6,7 +6,7 @@ import tensorflow as tf
 import argparse
 from tensorflow.keras.optimizers import Adam
 from utils import load_dataset
-from model import build_model, define_metrics, save_model, load_model
+from model import build_model, define_metrics, save_model, load_pretrained
 
 def main():
     parser = argparse.ArgumentParser(description='Parser to train Face Attribute Model')
@@ -33,6 +33,7 @@ def main():
 
     args = parser.parse_args()
     base_model = args.model
+    model_dir = args.model_dir
     train_tfrecord = args.train_tfrecord
     val_tfrecord = args.val_tfrecord
     num_classes = args.num_classes
@@ -49,7 +50,7 @@ def main():
 
     if args.pretrained:
         # Load pretrained model
-        attr_model = load_model(args.pretrained)
+        attr_model = load_pretrained(args.pretrained)
         print('Model loaded')
     else:
         # Build model
@@ -73,7 +74,7 @@ def main():
 
     # Save the model
     model_filename = 'attr_model.h5'
-    save_model(attr_model, model_dir, model_filename)
+    save_model(attr_model, model_dir, base_model)
 
 if __name__ == "__main__":
     main()
