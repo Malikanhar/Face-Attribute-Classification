@@ -80,7 +80,7 @@ def main():
             if '1' in labels:
                 annotations[filename] = list(labels)
             # Save the annotation for the non-selected classes as the mixed data
-            elif mixed < num_mixed:
+            elif mixed < args.mixed_num:
                 annotations[filename] = list(labels)
                 mixed += 1
             pbar.update(1)
