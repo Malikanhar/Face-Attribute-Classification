@@ -95,4 +95,4 @@ def save_model(model, model_dir, model_name):
 
 def load_pretrained(model_path):
     '''Load pretrained model.'''
-    return load_model(model_path)
+    return load_model(model_path, custom_objects={'F1_score': F1_score})
