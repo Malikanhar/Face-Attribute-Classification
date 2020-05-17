@@ -1,7 +1,9 @@
 import tensorflow as tf
 from tensorflow.keras.layers import GlobalAveragePooling2D, Dense, Dropout
+from tensorflow.keras.callbacks import ReduceLROnPlateau, ModelCheckpoint, EarlyStopping
 from tensorflow.keras.metrics import BinaryAccuracy, Precision, Recall, AUC
 from tensorflow.keras.models import Model, load_model
+from tensorflow.keras import backend as K
 from time import gmtime, strftime
 import os
 
@@ -51,13 +53,36 @@ def build_model(model, input_shape, num_classes):
 
     return Model(inputs=base_model.input, outputs=predictions)
 
+def F1_score(y_true, y_pred):
+    '''Define f1 measurement'''
+    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    
+    possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+    recall = true_positives / (possible_positives + K.epsilon())
+
+    predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
+    precision = true_positives / (predicted_positives + K.epsilon())
+
+    return 2*((precision * recall) / (precision + recall + K.epsilon()))
+
 def define_metrics():
     '''Define the training metrics.'''
     return [
       BinaryAccuracy(name='accuracy'),
+      F1_score,
       Precision(name='precision'),
       Recall(name='recall'),
       AUC(name='auc'),
+    ]
+
+def define_callbacks(ckpt_path, monitor='val_loss'):
+    '''Define the training callbacks.'''
+    return [
+        ModelCheckpoint(ckpt_path, monitor=monitor, verbose=0, save_best_only=True, 
+                        save_weights_only=False, mode='auto', save_freq='epoch'),
+        ReduceLROnPlateau(monitor=monitor, factor=0.1,
+                              patience=6, min_lr=1e-13),
+        EarlyStopping(monitor=monitor, patience=10, restore_best_weights=True)
     ]
 
 def save_model(model, model_dir, model_name):

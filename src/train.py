@@ -10,7 +10,7 @@ import tensorflow as tf
 import argparse
 from tensorflow.keras.optimizers import Adam
 from utils import load_dataset
-from model import build_model, define_metrics, save_model, load_pretrained
+from model import build_model, define_metrics, define_callbacks, save_model, load_pretrained
 
 def main():
     parser = argparse.ArgumentParser(description='Parser to train Face Attribute Model')
@@ -18,6 +18,8 @@ def main():
                                     help='Base model to use, vgg16, inception_v3, or resnet50')
     parser.add_argument('--model_dir', type=str, default='models',
                                     help='path to save model')
+    parser.add_argument('--ckpt_path', type=str, default='checkpoint',
+                                    help='path to save checkpoint')
     parser.add_argument('--pretrained', type=str, default=None,
                                     help='path to pretrained model')
     parser.add_argument('--train_tfrecord', type=str, required=True,
@@ -69,6 +71,9 @@ def main():
     # Define the training metrics
     metrics = define_metrics()
 
+    # Define callbacks
+    callbacks = define_callbacks(args.ckpt_path)
+
     # Define the optimizer
     opt = Adam(learning_rate = args.lr)
 
@@ -76,7 +81,7 @@ def main():
     attr_model.compile(optimizer=opt, loss='binary_crossentropy', metrics=metrics)
 
     # Start training model
-    attr_model.fit(train_dataset, epochs=num_epochs, validation_data=val_dataset, verbose=1)
+    attr_model.fit(train_dataset, epochs=num_epochs, validation_data=val_dataset, callbacks = callbacks, verbose=1)
 
     # Save the model
     model_filename = 'attr_model.h5'
