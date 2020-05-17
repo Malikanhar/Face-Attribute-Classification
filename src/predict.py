@@ -11,8 +11,8 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.preprocessing.image import load_img
-from tensorflow.keras.models import load_model
 from utils import transform_image
+from model import load_pretrained
 from mtcnn.mtcnn import MTCNN
 
 def detect_face(img):
@@ -152,7 +152,7 @@ def main():
     results = None
 
     # Load model
-    model = load_model(model_path)
+    model = load_pretrained(model_path)
 
     # Load image
     img = np.array(load_img(filename))
