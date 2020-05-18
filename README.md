@@ -1,11 +1,11 @@
 # Face-Attribute-Classification
-##### Eyeglasses, Beard, Mustache, and Hat classification using CelebA dataset.
+##### Eyeglasses, Beard, Mustache, and Hat classification using Tensorflow.
 
 ## Problem Analysis
-The face attribute classification is a multi label classification with four classes for each label including eyeglasses, mustache, beard, and hat. Each class on each label has a binary of 0 or 1 where 0 represents the absence of the class and 1 indicates the existence of the class. For example, if we have a target with values of `1, 0, 0, 1` it means that this face image has the attributes of eyeglasses and hat.
+The face attribute classification is a multi label classification with four classes for each image including eyeglasses, mustache, beard, and hat. Each class on each target has a binary of 0 or 1 where 0 represents the absence of the class and 1 indicates the existence of the class. For example, if we have a target with values of `1, 0, 0, 1` it means that this face image has the attributes of eyeglasses and hat.
 
 ### Transfer Learning
-Transfer learning is a pretty good technique to speed up the training process and avoid overfitting due to lack of training data. There are several models such as VGG16, InvceptionV3, Resnet, etc., which have been trained using the imagenet dataset. We can use the pre-trained weight and then freeze some or all of the convolution layers from the model. Lastly, add some Dense layers for the classification head with the `Sigmoid` activation for the last Dense.
+Transfer learning is a pretty good technique to speed up the training process and avoid overfitting due to lack of training data. There are several models such as VGG16, InvceptionV3, Resnet, etc., which have been trained using the imagenet dataset. We can use the pre-trained weights and then freeze some or all of the convolution layers from the model. Lastly, add some Dense layers for the classification head with the `Sigmoid` activation for the last Dense.
 
 ### Sigmoid Activation Rather Than Softmax
 The idea behind the softmax function is to normalize the data such that the values of the output layer in the network lie in the range of 0 to 1 and the sum of total values equal to 1. These values can then be interpreted as probabilities, where the highest probability is most likely the best candidate label for the sample in the dataset. Of course, this is acceptable for single label data because each label is considered mutually exclusive. For multi-label data another option should be considered. Because we cannot use softmax in this case, we should use some other functions that have a range of 0 or 1, so that these can be interpreted as probabilities. The sigmoid function is a good use for this task. Since the predictions in the output layer of the network are independent of the other output nodes, we can set a threshold to determine the classes for which the sample belongs. In our case, the threshold for the output layer is `0.5`.
@@ -58,4 +58,7 @@ Download pretrained face-attr classification model [here](https://drive.google.c
 The project demo can be found [here](https://colab.research.google.com/drive/1brzY0WWk92eoeIj2PPVBjHyxo8b6bpuP?authuser=1#scrollTo=qDhgvakUUrv8)
 
 ## Result
-![Result](https://github.com/Malikanhar/Face-Attribute-Detection/raw/master/assets/result.png)
+![Result 1](https://github.com/Malikanhar/Face-Attribute-Detection/raw/master/assets/result1.PNG)
+![Result 2](https://github.com/Malikanhar/Face-Attribute-Detection/raw/master/assets/result2.PNG)
+![Result 3](https://github.com/Malikanhar/Face-Attribute-Detection/raw/master/assets/result3.PNG)
+![Result 4](https://github.com/Malikanhar/Face-Attribute-Detection/raw/master/assets/result4.PNG)
