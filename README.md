@@ -54,5 +54,8 @@ python predict.py
 ### Download Pre-trained Model
 Download pretrained face-attr classification model [here](https://drive.google.com/file/d/1VxXkHyhFqFlrrIKoALEVxmqrrpmT8vSd/view?usp=sharing)
 
+## Demo
+The project demo can be found [here](https://colab.research.google.com/drive/1brzY0WWk92eoeIj2PPVBjHyxo8b6bpuP?authuser=1#scrollTo=qDhgvakUUrv8)
+
 ## Result
-![Result](https://github.com/Malikanhar/Face-Attribute-Detection/raw/master/assets/result.JPG)
+![Result](https://github.com/Malikanhar/Face-Attribute-Detection/raw/master/assets/result.png)
