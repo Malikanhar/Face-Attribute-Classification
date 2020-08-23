@@ -1,5 +1,5 @@
 # Face-Attribute-Classification
-##### Eyeglasses, Beard, Mustache, and Hat classification using Tensorflow.
+Eyeglasses, Beard, Mustache, and Hat classification using Tensorflow.
 
 ## Problem Analysis
 The face attribute classification is a multi label classification with four classes for each image including eyeglasses, mustache, beard, and hat. Each class on each target has a binary of 0 or 1 where 0 represents the absence of the class and 1 indicates the existence of the class. For example, if we have a target with values of `1, 0, 0, 1` it means that this face image has the attributes of eyeglasses and hat.
